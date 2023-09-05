@@ -4,9 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.repositories.dao.Code_InfoMapper">
 
-    <select id="find_Code_Info" parameterType="String" resultType="com.repositories.dao.Code_Info">
-        select * from code_info where watch_count =#{watch_count};
+    <select id="find_CodeInfo" parameterType="com.repositories.dao.Code_Info" resultType="com.repositories.dao.Code_Info">
+        select * from code_info where
+                (keyword like "%"#{key}"%" or project_name like "%"#{key}"%")
+            and keyword like #{language}"%"
+            and convert(watch_count,unsigned) > #{attention}
+            and convert(star_count,unsigned) > #{likes};
     </select>
 
+    <select id="select_byId" parameterType="int" resultType="com.repositories.dao.Code_Info">
+        select * from code_info where
+            project_id = #{project_id};
+    </select>
 
+<!--    <select id="find_CodeInfo_condition" parameterType="com.repositories.dao.Code_Info" resultType="com.repositories.dao.Code_Info">-->
+<!--        select #{condition} from code_info where-->
+<!--            (keyword like "%"#{key}"%" or project_name like "%"#{key}"%")-->
+<!--            and keyword like #{language}"%"-->
+<!--            and convert(watch_count,unsigned) > #{attention}-->
+<!--            and convert(star_count,unsigned) > #{likes};-->
+<!--    </select>-->
+
+    <update id="alter_CodeInfo" parameterType="com.repositories.dao.Code_Info">
+        update code_info
+            set keyword = #{keyword},
+                project_url = #{project_url},
+                download_url = #{download_url},
+                watch_count = #{watch_count},
+                fork_count = #{fork_count},
+                star_count = #{star_count},
+                update_time = #{update_time},
+                commit_count = #{commit_count},
+                about_text = #{about_text}
+                where project_name = #{project_name};
+    </update>
 </mapper>

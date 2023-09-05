@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.repositories.dao.Feed_BackMapper">
+
+    <select id="get_feedback"  resultType="com.repositories.dao.Feed_Back" >
+        select * from feedback;
+    </select>
+
+    <insert id="submit_feedback" parameterType="com.repositories.dao.Feed_Back">
+            insert into feedback (project_id,account,username,project_name,project_url,issue,handle,time,red,blue,green,err) values(#{project_id},#{account},#{username},#{project_name},#{project_url},#{issue},0,#{time},1,1,0,0);
+    </insert>
+
+    <select id="get_history"  resultType="com.repositories.dao.Feed_Back">
+        select project_name,project_url,issue,time from feedback where account = #{account};
+    </select>
+<!--    <delete id="pass" parameterType="com.repositories.dao.File_io">-->
+<!--        delete from feedback-->
+<!--            where project_name = #{project_name} and issue = #{issue}-->
+<!--            or-->
+<!--            where project_url =#{project_url} and issue = #{issue}-->
+<!--    </delete>-->
+
+    <update id="pass_feedback" parameterType="com.repositories.dao.Feed_Back">
+        update feedback
+        set handle = 1,red=#{red},blue=#{blue},green=#{green},err={err}
+        where project_id = #{project_id};
+    </update>
+
+    <update id="refuse_feedback" parameterType="com.repositories.dao.Feed_Back">
+        update feedback
+        set handle = -1,red=#{red},blue=#{blue},green=#{green},err={err}
+        where project_id = #{project_id};
+    </update>
+</mapper>

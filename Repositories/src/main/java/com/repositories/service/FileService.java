@@ -1,4 +1,5 @@
 package com.repositories.service;
+import com.repositories.dao.Code_Info;
 import com.repositories.dao.File_io;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,11 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 @Service
 public class FileService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
@@ -83,4 +89,19 @@ public class FileService {
         }
         return "succeed";
     }
-}
+
+
+
+    public void saveDataToCsv( Code_Info select_info) throws IOException {
+        String oldName = "fileSave.csv";
+        String newName = UUID.randomUUID().toString()
+                + oldName.substring(oldName.lastIndexOf("."), oldName.length());
+        try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter("D:/work/"+newName), CSVFormat.DEFAULT)) {
+
+            csvPrinter.printRecord("Column1Value", "Column2Value", "Column3Value");
+            csvPrinter.printRecord("AnotherRow1Value", "AnotherRow2Value", "AnotherRow3Value");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}}

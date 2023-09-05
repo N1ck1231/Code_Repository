@@ -5,11 +5,36 @@
 <mapper namespace="com.repositories.dao.UserMapper">
 
     <select id="findUserById" parameterType="String" resultType="com.repositories.dao.User">
-        select * from user where username = #{username};
+        select * from user where account = #{account};
     </select>
 
     <insert id="insertUser" parameterType="com.repositories.dao.User">
-        insert into user (username,password) values (#{username}, #{password});
+        insert into user (username,password,name,mark,token,routes,status) values (
+          #{username}
+        , #{password}
+        ,'普通用户'
+        ,'普通用户 - ' #{username}
+        ,#{token}
+        ,' [
+            { id: 1, name: "/people", path: "/people", component: "Layout", redirect: "/people/index", hidden: false, children: [
+                { name: "/people/index", path: "/people/index", meta: { title: "people" }, component: "people/index" },
+            ]},
+            { id: 2, name: "/search", path: "/search", component: "Layout", redirect: "/search/index", hidden: false, children: [
+                { name: "/search/index", path: "/search/index", meta: { title: "search" }, component: "search/index" }
+            ]},
+            ]'
+        ,'0');
     </insert>
+
+    <update id="set_info" parameterType="com.repositories.dao.User">
+            update user
+            set username =#{username},email=#{email},phone=#{phone},address=#{address},school=#{school}
+            where account = #{account};
+    </update>
+
+    <select id="getAll" resultType="com.repositories.dao.User">
+        select * from user;
+    </select>
+
  </mapper>
 
